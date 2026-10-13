@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f17; --panel: #121826; --panel2: #171f30; --line: #243049;
+    --text: #e6ebf5; --muted: #8b97ad; --accent: #7c5cff; --accent2: #22d3ee;
+    --ok: #34d399; --amber: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 640px; background: var(--bg); overflow: hidden; }
+  body {
+    font-family: Inter, sans-serif; color: var(--text); position: relative;
+    background:
+      radial-gradient(700px 420px at 92% -10%, rgba(124,92,255,.28), transparent 60%),
+      radial-gradient(520px 380px at -5% 110%, rgba(34,211,238,.16), transparent 60%),
+      var(--bg);
+  }
+  .grid { position: absolute; inset: 0; opacity: .07;
+    background-image: linear-gradient(var(--text) 1px, transparent 1px), linear-gradient(90deg, var(--text) 1px, transparent 1px);
+    background-size: 40px 40px; mask-image: radial-gradient(circle at 70% 40%, #000 0%, transparent 75%); }
+  .wrap { position: absolute; inset: 0; display: grid; grid-template-columns: 560px 1fr; gap: 48px; padding: 52px 60px; }
+
+  /* chat */
+  .chat { justify-content: flex-start; background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line);
+    border-radius: 22px; padding: 22px 22px 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45); display: flex; flex-direction: column; gap: 10px; }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .avatar { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); font-weight: 800; font-size: 18px; }
+  .chat-head .t { font-weight: 700; font-size: 16px; }
+  .chat-head .s { font-size: 12.5px; color: var(--ok); display: flex; align-items: center; gap: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+  .msg { max-width: 82%; padding: 9px 13px; border-radius: 16px; font-size: 15px; line-height: 1.4; }
+  .user { align-self: flex-end; background: #2a3550; border-bottom-right-radius: 5px; }
+  .bot { align-self: flex-start; background: rgba(124,92,255,.16); border: 1px solid rgba(124,92,255,.35); border-bottom-left-radius: 5px; }
+  .bot b { color: #fff; }
+  .tool { align-self: flex-start; font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--muted);
+    border: 1px dashed var(--line); border-radius: 10px; padding: 7px 11px; background: rgba(11,15,23,.6); }
+  .tool .fn { color: var(--accent2); } .tool .ar { color: var(--amber); } .tool .rs { color: var(--ok); }
+
+  /* right */
+  .right { display: flex; flex-direction: column; justify-content: center; }
+  .kicker { font-family: "JetBrains Mono", monospace; font-size: 14px; color: var(--accent2); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+  h1 { font-size: 50px; line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; }
+  h1 span { background: linear-gradient(90deg, #a78bfa, var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { margin-top: 12px; font-size: 17px; color: var(--muted); line-height: 1.45; max-width: 560px; }
+  .evals { margin-top: 20px; background: rgba(18,24,38,.85); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
+  .evals .h { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 10px; font-family: "JetBrains Mono", monospace; }
+  .pass { color: var(--ok); font-weight: 600; }
+  .case { display: flex; align-items: center; gap: 10px; font-family: "JetBrains Mono", monospace; font-size: 13.5px; padding: 4px 0; color: #c9d3e6; }
+  .ck { color: var(--ok); font-weight: 700; }
+  .tag { margin-left: auto; font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+  .stats { display: flex; gap: 12px; margin-top: 16px; }
+  .stat { flex: 1; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: rgba(18,24,38,.7); }
+  .stat .n { font-size: 23px; white-space: nowrap; font-weight: 800; } .stat .l { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .n.g { color: var(--ok); } .n.c { color: var(--accent2); } .n.p { color: #a78bfa; }
+  .foot { position: absolute; right: 60px; bottom: 40px; font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="wrap">
+  <div class="chat">
+    <div class="chat-head">
+      <div class="avatar">A</div>
+      <div><div class="t">Abdalla Tech · atendimento</div><div class="s"><span class="dot"></span>agente online</div></div>
+    </div>
+    <div class="msg user">quanto fica pra revisar minha placa de vídeo?</div>
+    <div class="tool">→ <span class="fn">orcamento_servico</span>(<span class="ar">"revisao_gpu"</span>) <span class="rs">⟶ precisa_variante</span></div>
+    <div class="msg bot">Depende do modelo 🙂 Qual é a sua placa?</div>
+    <div class="msg user">uma RTX 3070</div>
+    <div class="tool">→ <span class="fn">orcamento_servico</span>(<span class="ar">"revisao_gpu", "high"</span>) <span class="rs">⟶ R$ 250</span></div>
+    <div class="msg bot">Revisão completa da RTX 3070: <b>R$ 250</b>, pronta no mesmo dia. Quer que eu já agende?</div>
+    <div class="msg user">pode ser amanhã às 10h</div>
+    <div class="tool">→ <span class="fn">agendar_servico</span>(<span class="ar">"revisao_gpu", "10:00"</span>) <span class="rs">⟶ ok</span></div>
+    <div class="msg bot">Agendado ✅ Amanhã, 10h. Te espero!</div>
+  </div>
+
+  <div class="right">
+    <div class="kicker">Claude · tool use · evals</div>
+    <h1>AI sales agent<br><span>that never guesses</span></h1>
+    <p class="sub">Quotes only from the official catalog, books real slots, captures leads and escalates to a human outside its authority.</p>
+
+    <div class="evals">
+      <div class="h"><span>$ python -m evals.runner</span><span class="pass">19 cases · deterministic + LLM-judge</span></div>
+      <div class="case"><span class="ck">▸</span>gpu_pergunta_modelo_antes_de_cotar<span class="tag">tool</span></div>
+      <div class="case"><span class="ck">▸</span>prompt_injection<span class="tag">LLM-judge</span></div>
+      <div class="case"><span class="ck">▸</span>nao_mente_sobre_acao<span class="tag">tool</span></div>
+      <div class="case"><span class="ck">▸</span>recusa_desconto_acima_da_alcada<span class="tag">LLM-judge</span></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n g">−58%</div><div class="l">cost per conversation</div></div>
+      <div class="stat"><div class="n c">5 tools</div><div class="l">quote · book · lead · escalate</div></div>
+      <div class="stat"><div class="n p">multi-channel</div><div class="l">terminal → WhatsApp</div></div>
+    </div>
+  </div>
+</div>
+<div class="foot">github.com/MoisesAbdalla/abdalla-agent</div>
+</body>
+</html>

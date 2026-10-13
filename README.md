@@ -1,5 +1,7 @@
 # Abdalla Agent — AI sales & support agent with evals
 
+![Abdalla Agent](docs/cover.png)
+
 > 🇧🇷 [Guia completo em português](docs/GUIA.pt-BR.md)
 
 A production-minded sales and customer-support agent for **Abdalla Tech**, my PC repair and
